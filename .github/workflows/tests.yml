@@ -14,7 +14,7 @@ jobs:
           coverage: xdebug
 
       - name: Install
-          run: make setup
+          run: make install
 
       - run: make lint
 
