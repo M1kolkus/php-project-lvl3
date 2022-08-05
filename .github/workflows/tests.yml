@@ -13,8 +13,7 @@ jobs:
           php-version: '8.1'
           coverage: xdebug
 
-      - name: Install
-          run: make install
+      - run: make install
 
       - run: make lint
 
