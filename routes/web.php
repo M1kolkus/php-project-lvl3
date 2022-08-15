@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AnalyzerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +18,4 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 
-Route::get('/', ['AnalyzerController', 'analyzer']);
+Route::get('/', [AnalyzerController::class, 'analyzer']);
