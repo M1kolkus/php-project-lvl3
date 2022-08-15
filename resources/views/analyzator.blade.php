@@ -27,7 +27,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" href="https://php-page-analyzer-ru.hexlet.app">Главная</a>
+                    <a class="nav-link active" href="https://nameless-badlands-15518.herokuapp.com">Главная</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="https://php-page-analyzer-ru.hexlet.app/urls">Сайты</a>
