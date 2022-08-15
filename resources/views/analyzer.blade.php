@@ -4,7 +4,6 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="6J00Eg2wZrhxcALECogTytZuhgBdQ5GSfPMQArY7">
-
     <title>Анализатор страниц</title>
 
     <!-- Scripts -->
