@@ -4,3 +4,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/85e2d7ccd53d9b11ae13/maintainability)](https://codeclimate.com/github/M1kolkus/php-project-lvl3/maintainability)
 
 [Link to site](https://nameless-badlands-15518.herokuapp.com/)
+
+### Start Database
+`docker-compose up -d`
