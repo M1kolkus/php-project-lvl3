@@ -73,3 +73,6 @@ ide-helper:
 
 install:
 	composer install
+
+key-generate:
+	php artisan key:generate
