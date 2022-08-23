@@ -19,6 +19,9 @@ use App\Http\Controllers\AnalyzerController;
 //});
 
 Route::get('/', [AnalyzerController::class, 'analyzer']);
-Route::post('/', [AnalyzerController::class, 'urls'])->name('start');
-Route::get('/urls', [AnalyzerController::class, 'index'])->name('index');
-Route::get('/urls/{id}', [AnalyzerController::class, 'domain'])->name('urls');
+Route::post('/', [AnalyzerController::class, 'urls'])
+    ->name('start');
+Route::get('/urls', [AnalyzerController::class, 'index'])
+    ->name('index');
+Route::get('/urls/{id}', [AnalyzerController::class, 'domain'])
+    ->name('urls');
