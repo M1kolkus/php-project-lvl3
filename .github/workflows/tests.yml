@@ -29,6 +29,7 @@ jobs:
       DB_DATABASE: laravel
       DB_USERNAME: laravel
       DB_PASSWORD: laravel
+      APP_KEY: 'base64:rfq0KdcwqbZyGqcg5qKu8/vC+8RNLBg8Zwe8iN0NuKQ='
     steps:
       - uses: actions/checkout@v2
 
@@ -39,10 +40,6 @@ jobs:
           coverage: xdebug
 
       - run: make install
-
-      - run: touch .env
-
-      - run: make key-generate
 
       - run: make lint
 
