@@ -40,6 +40,8 @@ jobs:
 
       - run: make install
 
+      - run: touch .env
+
       - run: make key-generate
 
       - run: make lint
