@@ -39,7 +39,7 @@ deploy:
 	git push heroku
 
 lint:
-	phpcs
+	./vendor/bin/phpcs
 
 lint-fix:
 	composer phpcbf
