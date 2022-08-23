@@ -75,4 +75,4 @@ install:
 	composer install
 
 key-generate:
-	php artisan key:generate
+	php artisan key:generate --env=testing
