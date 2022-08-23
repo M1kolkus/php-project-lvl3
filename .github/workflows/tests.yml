@@ -11,7 +11,7 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: laravel
           POSTGRES_USER: laravel
           POSTGRES_DB: laravel
         # Set health checks to wait until postgres has started
