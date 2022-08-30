@@ -83,10 +83,14 @@ class AnalyzerController extends Controller
         $title = $document->first('title')->text();
         $description = optional($document->first('meta[name=description]'))->getAttribute('content');
 
-        DB::insert(
-            'insert into url_checks (url_id, status_code, h1, title, description, created_at) values (?, ?, ?, ?, ?, ?)',
-            [$id, $response->status(), $h1, $title, $description, Carbon::now()]
-        );
+        DB::table('url_checks')->insert([
+            'url_id' => $id,
+            'created_at' => Carbon::now()->toString(),
+            'status_code' => $response->status(),
+            'h1' => $h1,
+            'title' => $title,
+            'description' => $description,
+        ]);
 
         flash('Страница успешно проверена');
 
