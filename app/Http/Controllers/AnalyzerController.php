@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use DiDom\Document;
 
 class AnalyzerController extends Controller
 {
@@ -24,8 +26,7 @@ class AnalyzerController extends Controller
         $parseUrl = parse_url($url);
         $domain = $parseUrl['scheme'] . '://' . $parseUrl['host'];
 
-        $arrayUrl = json_decode(json_encode(DB::table('urls')
-            ->where('name', $domain)->first()), true);
+        $arrayUrl = DB::table('urls')->where('name', $domain)->first();
 
         if (is_null($arrayUrl)) {
             DB::insert(
@@ -33,34 +34,62 @@ class AnalyzerController extends Controller
                 [$domain, Carbon::now()]
             );
 
-            $arrayDomain = json_decode(json_encode(DB::table('urls')
-                ->where('name', $domain)->first()), true);
-
-            $id = $arrayDomain['id'];
+            $arrayDomain = DB::table('urls')->where('name', $domain)->first();
 
             flash('Страница успешно добавлена');
 
-            return redirect()->route('urls', ['id' => $id]);
+            return redirect()->route('urls', ['id' => $arrayDomain->id]);
         }
-
-        $id = $arrayUrl['id'];
 
         flash('Страница уже существует');
 
-        return redirect()->route('urls', ['id' => $id]);
+        return redirect()->route('urls', ['id' => $arrayUrl->id]);
     }
 
     public function index()
     {
-        $urls = DB::table('urls')->get();
-        $arrayUrls = json_decode(json_encode($urls), true);
-        return view('urls', ['urls' => $arrayUrls]);
+        $lastChecks = DB::table('url_checks')
+            ->orderBy('url_id')
+            ->latest()
+            ->distinct('url_id')
+            ->get()
+            ->keyBy('url_id');
+
+        $urls = DB::table('urls')
+            ->oldest()
+            ->paginate(15);
+
+        return view('urls', compact('lastChecks', 'urls'));
     }
 
     public function domain($id)
     {
         $url = DB::table('urls')->where('id', $id)->first();
-        $arrayUrl = json_decode(json_encode($url), true);
-        return view('domain', ['url' => $arrayUrl]);
+        $checks = DB::table('url_checks')->where('url_id', $id)->get();
+
+        return view('domain', compact('url', 'checks'));
+    }
+
+    /**
+     * @throws \DiDom\Exceptions\InvalidSelectorException
+     */
+    public function checks($id)
+    {
+        $url = DB::table('urls')->find($id);
+
+        $response = Http::get($url->name);
+        $document = new Document($response->body());
+        $h1 = optional($document->first('h1'))->text();
+        $title = $document->first('title')->text();
+        $description = optional($document->first('meta[name=description]'))->getAttribute('content');
+
+        DB::insert(
+            'insert into url_checks (url_id, status_code, h1, title, description, created_at) values (?, ?, ?, ?, ?, ?)',
+            [$id, $response->status(), $h1, $title, $description, Carbon::now()]
+        );
+
+        flash('Страница успешно проверена');
+
+        return redirect()->route('urls', ['id' => $id]);
     }
 }
