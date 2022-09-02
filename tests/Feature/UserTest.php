@@ -44,8 +44,8 @@ class UserTest extends TestCase
     {
         $data = ['url' => ['name' => 'https://test.com']];
         $response = $this->post(route('start'), $data);
-      //  $response->assertSessionHasNoErrors();
-        $response->assertRedirect();
+        $response->assertSessionHasNoErrors();
+        //$response->assertRedirect();
 
         $this->assertDatabaseHas('urls', $data['url']);
     }
