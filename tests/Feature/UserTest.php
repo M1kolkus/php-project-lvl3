@@ -43,7 +43,7 @@ class UserTest extends TestCase
     public function testStore()
     {
         $data = ['url' => ['name' => 'https://test.com']];
-        $response = $this->post(route('urls'), $data);
+        $response = $this->post(route('start'), $data);
       //  $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
