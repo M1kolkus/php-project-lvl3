@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -45,7 +43,7 @@ class UserTest extends TestCase
     public function testStore()
     {
         $data = ['url' => ['name' => 'https://' . Str::random(10) . ".com"]];
-        $response = $this->post(route('start'), $data);
+        $response = $this->post(route('urls'), $data);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
