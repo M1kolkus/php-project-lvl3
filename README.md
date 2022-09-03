@@ -5,5 +5,3 @@
 
 [Link to site](https://nameless-badlands-15518.herokuapp.com/)
 
-### Start Database
-`docker-compose up -d`

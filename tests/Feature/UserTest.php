@@ -20,7 +20,7 @@ class UserTest extends TestCase
         parent::setUp();
 
         $this->id = DB::table('urls')->insertGetId([
-            'name' => 'http://' . strtolower(Str::random(10)) . ".ru",
+            'name' => 'http://test.ru',
             'created_at' => Carbon::now()
         ]);
     }
@@ -40,15 +40,15 @@ class UserTest extends TestCase
     }
 
 
-//    public function testStore()
-//    {
-//        $data = ['url' => ['name' => 'https://test.com']];
-//        $response = $this->post(route('start'), $data);
-//        $response->assertSessionHasNoErrors();
-//        $response->assertRedirect();
-//
-//        $this->assertDatabaseHas('urls', $data['url']);
-//    }
+    public function testStore()
+    {
+        $data = ['url' => ['name' => 'https://test.com']];
+        $response = $this->post(route('start'), $data);
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect();
+
+        $this->assertDatabaseHas('urls', $data['url']);
+    }
 
     public function testShow()
     {
