@@ -6,7 +6,6 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-
 class UserTest extends TestCase
 {
     private int $id;
