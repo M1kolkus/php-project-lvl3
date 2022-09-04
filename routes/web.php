@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnalyzerController;
+use App\Http\Controllers\UrlController;
+use App\Http\Controllers\UrlChecksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,16 +16,11 @@ use App\Http\Controllers\AnalyzerController;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/', [AnalyzerController::class, 'analyzer'])->name('start');
+Route::post('/', [UrlController::class, 'store']);
 
-Route::get('/', [AnalyzerController::class, 'analyzer']);
-Route::post('/', [AnalyzerController::class, 'urls'])
-    ->name('start');
-Route::get('/urls', [AnalyzerController::class, 'index'])
-    ->name('index');
-Route::get('/urls/{id}', [AnalyzerController::class, 'domain'])
-    ->name('urls');
-Route::post('/urls/{id}/checks', [AnalyzerController::class, 'checks'])
-    ->name('checks');
+Route::resource('urls', UrlController::class)
+    ->only(['index', 'store', 'show']);
+
+Route::resource('urls.checks', UrlChecksController::class)
+    ->only(['store']);
