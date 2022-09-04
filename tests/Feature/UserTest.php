@@ -53,7 +53,7 @@ class UserTest extends TestCase
 
     public function testShow()
     {
-        $response = $this->get(route('urls', ['id' => $this->id]));
+        $response = $this->get(route('urls.show', ['url' => $this->id]));
         $response->assertOk();
     }
 }

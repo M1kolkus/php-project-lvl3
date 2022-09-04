@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Http;
 
 class UrlChecksController extends Controller
 {
-    public function store($id)
+    public function store(int $id)
     {
         $url = DB::table('urls')->find($id);
 
         $response = Http::get($url->name);
         $document = new Document($response->body());
         $h1 = optional($document->first('h1'))->text();
-        $title = $document->first('title')->text();
+        $title = optional($document->first('title'))->text();
         $description = optional($document->first('meta[name=description]'))->getAttribute('content');
 
         DB::table('url_checks')->insert([

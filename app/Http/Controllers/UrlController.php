@@ -30,8 +30,8 @@ class UrlController extends Controller
             'url.name' => 'required|url|max:255'
         ]);
 
-        $url = $request->post('url')['name'];
-        $parseUrl = parse_url($url);
+        $url = $request->input('url');
+        $parseUrl = parse_url($url['name']);
         $domain = $parseUrl['scheme'] . '://' . $parseUrl['host'];
 
         $arrayUrl = DB::table('urls')->where('name', $domain)->first();
@@ -54,7 +54,7 @@ class UrlController extends Controller
         return redirect()->route('urls.show', ['url' => $arrayUrl->id]);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         $url = DB::table('urls')->where('id', $id)->first();
         $checks = DB::table('url_checks')->where('url_id', $id)->get();
