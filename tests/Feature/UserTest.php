@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 class UserTest extends TestCase
 {
     private int $id;
+
     /**
      * A basic feature test example.
      *
@@ -52,7 +53,7 @@ class UserTest extends TestCase
 
     public function testShow()
     {
-        $response = $this->get(route('urls', ['id' =>$this->id]));
+        $response = $this->get(route('urls', ['id' => $this->id]));
         $response->assertOk();
     }
 }
