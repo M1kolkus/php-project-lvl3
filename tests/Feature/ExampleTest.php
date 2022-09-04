@@ -46,9 +46,9 @@ class ExampleTest extends TestCase
             'description' => 'test_description'
         ];
 
-        $response = $this->post(route('urls.show', $newUrlId));
+        $response = $this->post(route('urls.checks.store', $newUrlId));
         $response->assertSessionHasNoErrors();
-        //$response->assertRedirect();
+        $response->assertRedirect();
         $this->assertDatabaseHas('url_checks', $expectedData);
     }
 }
