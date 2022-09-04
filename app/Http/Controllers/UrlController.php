@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class UrlController extends Controller
 {
@@ -41,7 +42,7 @@ class UrlController extends Controller
                 'insert into urls (name, created_at) values (?, ?)',
                 [$domain, Carbon::now()]
             );
-
+            /** @var stdClass $arrayDomain */
             $arrayDomain = DB::table('urls')->where('name', $domain)->first();
 
             flash('Страница успешно добавлена');
