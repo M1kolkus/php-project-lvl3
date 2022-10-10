@@ -9,9 +9,13 @@ use Illuminate\Support\Facades\Http;
 
 class UrlChecksController extends Controller
 {
-    public function store(int $id)
+    public function store(int $id): object
     {
         $url = DB::table('urls')->find($id);
+
+        if ($url === null) {
+            abort('404');
+        }
 
         $response = Http::get($url->name);
         $document = new Document($response->body());

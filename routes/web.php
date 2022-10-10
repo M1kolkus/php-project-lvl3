@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AnalyzerController;
 use App\Http\Controllers\UrlController;
 use App\Http\Controllers\UrlChecksController;
 
@@ -16,11 +15,11 @@ use App\Http\Controllers\UrlChecksController;
 |
 */
 
-Route::get('/', [AnalyzerController::class, 'analyzer'])->name('start');
-Route::post('/', [UrlController::class, 'store']);
+Route::get('/', [UrlController::class, 'create'])->name('start');
+Route::post('/', [UrlController::class, 'store'])->name('store');
 
 Route::resource('urls', UrlController::class)
-    ->only(['index', 'store', 'show']);
+    ->only(['create', 'index', 'show']);
 
 Route::resource('urls.checks', UrlChecksController::class)
     ->only(['store']);

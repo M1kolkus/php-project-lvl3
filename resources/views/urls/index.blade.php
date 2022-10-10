@@ -2,9 +2,6 @@
 
 @section('main_content')
 
-    <div>
-        @include('flash::message')
-    </div>
     <main class="flex-grow-1">
         <div class="container-lg">
             <h1 class="mt-5 mb-3">Сайты</h1>
@@ -22,9 +19,9 @@
                     @foreach($urls as $url)
                         <tr>
                             <td>{{ $url->id }}</td>
-                            <td><a href="/urls/{{ $url->id }}"/>{{ $url->name }}</a></td>
-                            <td>{{ $lastChecks[$url->id]->created_at ?? '' }}</td>
-                            <td>{{ $lastChecks[$url->id]->status_code ?? '' }}</td>
+                            <td><a href="{{ route('urls.show', [$url->id]) }}"/>{{ $url->name }}</a></td>
+                            <td>{{ optional($lastChecks[$url->id]->get($url->id))->created_at }}</td>
+                            <td>{{ optional($lastChecks[$url->id]->get($url->id))->status_code }}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -32,8 +29,6 @@
                 <div>
                     {{ $urls->links('vendor/pagination/bootstrap-5') }}
                 </div>
-
-
             </div>
         </div>
         </div>

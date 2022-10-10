@@ -5,27 +5,36 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use stdClass;
 
 class UrlController extends Controller
 {
-    public function index()
+    public function create(): object
     {
-        $lastChecks = DB::table('url_checks')
-            ->orderBy('url_id')
-            ->latest()
-            ->distinct('url_id')
-            ->get()
-            ->keyBy('url_id');
+        return view('urls.create');
+    }
 
+    public function index(): object
+    {
         $urls = DB::table('urls')
             ->oldest()
             ->paginate(15);
 
-        return view('urls', compact('lastChecks', 'urls'));
+        $lastChecks = [];
+
+        foreach($urls->items() as $url) {
+            $lastChecks[$url->id] = DB::table('url_checks')
+                ->orderBy('url_id')
+                ->latest()
+                ->distinct('url_id')
+                ->where('url_id', $url->id)
+                ->get()
+                ->keyBy('url_id');
+        }
+
+        return view('urls.index', compact('lastChecks', 'urls'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): object
     {
         $valid = $request->validate([
             'url.name' => 'required|url|max:255'
@@ -35,31 +44,33 @@ class UrlController extends Controller
         $parseUrl = parse_url($url['name']);
         $domain = $parseUrl['scheme'] . '://' . $parseUrl['host'];
 
-        $arrayUrl = DB::table('urls')->where('name', $domain)->first();
+        $urlObject = DB::table('urls')->where('name', $domain)->first();
 
-        if (is_null($arrayUrl)) {
-            DB::insert(
-                'insert into urls (name, created_at) values (?, ?)',
-                [$domain, Carbon::now()]
-            );
-            /** @var stdClass $arrayDomain */
-            $arrayDomain = DB::table('urls')->where('name', $domain)->first();
+        if ($urlObject !== null) {
+            flash('Страница уже существует');
 
-            flash('Страница успешно добавлена');
-
-            return redirect()->route('urls.show', ['url' => $arrayDomain->id]);
+            return redirect()->route('urls.show', ['url' => $urlObject->id]);
         }
 
-        flash('Страница уже существует');
+        $id = DB::table('urls')->insertGetId(
+            ['name' => $domain, 'created_at' => Carbon::now()]
+        );
 
-        return redirect()->route('urls.show', ['url' => $arrayUrl->id]);
+        flash('Страница успешно добавлена');
+
+        return redirect()->route('urls.show', ['url' => $id]);
+
     }
 
-    public function show(int $id)
+    public function show(int $id): object
     {
         $url = DB::table('urls')->where('id', $id)->first();
+
+        if ($url === null) {
+            abort('404');
+        }
         $checks = DB::table('url_checks')->where('url_id', $id)->get();
 
-        return view('domain', compact('url', 'checks'));
+        return view('urls.show', compact('url', 'checks'));
     }
 }
